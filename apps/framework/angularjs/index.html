@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+</head>
+
+<body ng-app="myApp">
+    <a href="#!home">Main</a>
+    <a href="#!product">Product</a>
+    
+    <br>
+
+    <div ng-view></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.js"></script>
+    <script>
+        var app = angular.module("myApp", ["ngRoute"]);
+
+        app.controller('myHome', function($scope, $http) {
+            $scope.firstName = "John";
+            $scope.lastName = "Doe";
+            $scope.dummy_json="";
+
+            $scope.test = function(){
+                $http.post('https://httpbin.org/post',{fname:$scope.firstName,lname:$scope.lastName})
+                .then(function(respone){
+                    $scope.dummy_json = respone.data.data;
+                })
+            }
+        });
+
+        app.controller('myProduct', function($scope, $http) {
+
+            $scope.name = "Product";
+            
+            $http.get('http://localhost:82/test.json').then(function(response){
+                $scope.data_http_get = response.data;
+                //$scope.content = response.data;
+                //$scope.statuscode = response.status;
+                //$scope.statustext = response.statusText;
+            })
+
+        });
+
+        app.config(function($routeProvider) {
+            $routeProvider
+            .when("/home", {
+                templateUrl : "main.htm",
+                controller: 'myHome'
+            })
+            .when("/product", {
+                templateUrl : "product.htm",
+                controller: 'myProduct'
+            }).otherwise ({
+                redirectTo: '/home'
+            });
+        });
+    </script>
+</body>
+
+</html>

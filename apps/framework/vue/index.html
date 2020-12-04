@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Product</title>
+</head>
+
+<body>
+    <div id="app">
+
+        <br>
+        Name: <input type="text" v-model="message"><br>
+        <button v-on:click="test">Click</button>
+
+        <br>
+        Name: {{message}}
+        <br>
+        <ol>
+            <!-- Create an instance of the todo-item component -->
+            <todo-item
+                v-for="item in groceryList"
+                v-bind:todo="item"
+                v-bind:key="item.id"
+                ></todo-item>
+        </ol>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: '<li>{{ todo.text }}</li>'
+        })
+
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello Vue!',
+                groceryList: [
+                    { id: 0, text: 'Vegetables' },
+                    { id: 1, text: 'Cheese' },
+                    { id: 2, text: 'Whatever else humans are supposed to eat' }
+                ]
+            },
+            methods: {
+                test: function(){
+                    this.message = "ahahah"
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
